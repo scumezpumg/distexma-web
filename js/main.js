@@ -37,7 +37,7 @@ if ("IntersectionObserver" in window) {
    CONEXIÓN A ORACLE Y RENDERIZADO DE MODALES
 ======================================================== */
 // IMPORTANTE: cambia esta URL cada vez que reinicies el túnel (sin barra al final)
-const API_URL = 'https://483926648e40cd.lhr.life/distexma';
+const API_URL = 'https://d6711a039deb22.lhr.life/distexma';
 
 let inventarioOracle = [];
 const NOMBRES_ORACLE = { 'capuano': 'Capuano', 'sedalina': 'Sedalina', 'zim': 'Lana Zim' };
