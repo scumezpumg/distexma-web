@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DISTEXMA — Hilos e insumos textiles. Conoce nuestra línea de hilos Capuano, Sedalina y Lana Zim.">
+    <meta name="theme-color" content="#1557A6">
+    <title>DISTEXMA | Hilos e Insumos Textiles</title>
+    <link rel="icon" href="assets/img/favicon.jpeg" type="image/png">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="fondo-moderno"></div>
+    <!-- =========================================================
+         CURSOR PERSONALIZADO DINÁMICO
+    ========================================================== -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    <!-- =========================================================
+         HILOS MÁGICOS (Efecto de Scroll)
+    ========================================================== -->
+    <div class="hilos-magicos">
+        <svg viewBox="0 0 100 1000" preserveAspectRatio="none">
+            <!-- Hilo Azul -->
+            <path id="hilo-azul" class="hilo" stroke="var(--navy)" d="M 50,0 C 80,200 20,400 50,600 C 80,800 20,900 50,1000" />
+            <!-- Hilo Amarillo (Dorado) -->
+            <path id="hilo-amarillo" class="hilo" stroke="var(--gold)" d="M 30,0 C -10,250 90,450 30,650 C -10,850 90,950 30,1000" />
+            <!-- Hilo Rojo -->
+            <path id="hilo-rojo" class="hilo" stroke="var(--red)" d="M 70,0 C 110,150 10,350 70,550 C 110,750 10,850 70,1000" />
+        </svg>
+    </div>
+    <!-- HEADER -->
+    <header class="header" id="header">
+        <div class="container header-inner">
+            <a href="#" class="logo" aria-label="DISTEXMA">
+                <span style="font-size: 1.5rem; color: var(--gold); font-weight: 900;">DISTEXMA</span>
+            </a>
+            <nav class="nav" id="nav">
+                <a class="nav-link" href="#catalogo">Catálogo</a>
+                <a class="nav-link" href="#nosotros">Quiénes somos</a>
+                <a class="nav-link" href="#contacto">Contacto</a>
+            </nav>
+            <div class="header-actions">
+                <button class="search-button cart-button" onclick="openCart()" type="button">
+                    🛒 <span>Carrito</span>
+                    <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
+                </button>
+                <button class="menu-button" id="menuButton" onclick="toggleMenu()" type="button" aria-label="Abrir menú" aria-expanded="false">
+                    ☰
+                </button>
+            </div>
+        </div>
+    </header>
+    <main>
+        <!-- BUSCADOR RÁPIDO POR CÓDIGO EN LA WEB -->
+<div class="search-box-container" style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #E2E8F0; margin-bottom: 20px;">
+    <label style="font-weight: bold; color: #1557A6; font-size: 14px; display: block; margin-bottom: 5px;">🔍 Búsqueda rápida por Código:</label>
+    <input 
+        type="text" 
+        id="inputBusquedaWeb" 
+        placeholder="Ej: 1101CAP (máx. 10 resultados)" 
+        onkeyup="ejecutarBusquedaWeb(this.value)"
+        style="width: 100%; padding: 8px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 14px; text-transform: uppercase;"
+    />
+    <div id="resultadosBusquedaWeb" style="margin-top: 5px; max-height: 150px; overflow-y: auto;"></div>
+</div>
+        <!-- HERO -->
+        <section class="hero" id="inicio">
+            <div class="container hero-grid">
+                <div class="hero-content">
+                    <div class="location-badge reveal">📍 Tecpán Guatemala, Chimaltenango</div>
+                    <h1 class="hero-title reveal delay-1">Al servicio de la industria <span>textil y artesanal.</span></h1>
+                    <p class="hero-text reveal delay-2">Conoce nuestra línea de hilos textiles, seleccionados para diferentes necesidades de tejeduría, confección e industria.</p>
+                    <div class="hero-actions reveal delay-3">
+                        <a href="#catalogo" class="button button-primary">Conocer nuestros hilos →</a>
+                        <a href="#nosotros" class="button button-outline">Conocer DISTEXMA</a>
+                    </div>
+                </div>
+                <div class="hero-visual reveal delay-2">
+                    <div class="hero-card hero-card-main">
+                        <img src="assets/img/estante2.jpeg" alt="Hilos textiles DISTEXMA" width="800" height="600" fetchpriority="high">
+                    </div>
+                    <div class="hero-card hero-card-small">
+                        <img src="assets/img/localexterno.jpeg" alt="Hilos Capuano" width="400" height="300">
+                    </div>
+                    <div class="hero-float">3 líneas principales</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUCTOS -->
+        <section class="section" id="catalogo">
+            <div class="container">
+                <div class="products-header reveal">
+                    <div>
+                        <span class="section-label">Nuestra selección</span>
+                        <h2 class="section-title">Nuestros hilos</h2>
+                        <p class="section-description">Tres líneas principales pensadas para diferentes necesidades dentro del sector textil.</p>
+                    </div>
+                </div>
+                <div class="products-grid">
+                    <!-- CAPUANO -->
+                    <article class="product-card reveal" data-product="capuano">
+                        <div class="product-image">
+                            <span class="product-number">01</span>
+                            <img class="image-one" src="assets/img/capuano-1.jpeg" alt="Hilo Capuano" width="700" height="500" loading="lazy">
+                        </div>
+                        <div class="product-content">
+                            <div>
+                                <span class="product-category">Tejeduría e industria</span>
+                                <h3 class="product-title">Hilo Capuano</h3>
+                                <p class="product-description">Hilo de gran estabilidad estructural, disponible en una variada gama de colores con códigos estándar para tejeduría.</p>
+                                <div class="product-tags">
+                                    <span class="product-tag">Cono Normal</span>
+                                    <span class="product-tag">Cono Grande</span>
+                                    <span class="product-tag">Varios colores</span>
+                                </div>
+                            </div>
+                            <div class="product-actions">
+                                <button class="product-button-catalog" type="button" onclick="openProduct('capuano')">
+                                    🎨 Ver catálogo de colores
+                                </button>
+                                <a class="product-button-whatsapp" href="https://wa.me/50245947651?text=Hola%20DISTEXMA,%20deseo%20consultar%20por%20el%20Hilo%20Capuano" target="_blank" rel="noopener noreferrer">
+                                    💬 Consultar por WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                    <!-- SEDALINA -->
+                    <article class="product-card reveal delay-1" data-product="sedalina">
+                        <div class="product-image">
+                            <span class="product-number">02</span>
+                            <img class="image-one" src="assets/img/estante6.jpeg" alt="Hilo Sedalina" width="700" height="500" loading="lazy">
+                        </div>
+                        <div class="product-content">
+                            <div>
+                                <span class="product-category">Acabado fino y suave</span>
+                                <h3 class="product-title">Hilo Sedalina</h3>
+                                <p class="product-description">Textura sedosa de tacto suave y brillo elegante. Excelente fluidez para confección delicada y costuras finas.</p>
+                                <div class="product-tags">
+                                    <span class="product-tag">Textura suave</span>
+                                    <span class="product-tag">Acabado fino</span>
+                                    <span class="product-tag">Varios colores</span>
+                                </div>
+                            </div>
+                            <div class="product-actions">
+                                <button class="product-button-catalog" type="button" onclick="openProduct('sedalina')">
+                                    🎨 Ver catálogo de colores
+                                </button>
+                                <a class="product-button-whatsapp" href="https://wa.me/50245947651?text=Hola%20DISTEXMA,%20deseo%20consultar%20por%20el%20Hilo%20Sedalina" target="_blank" rel="noopener noreferrer">
+                                    💬 Consultar por WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                    <!-- ZIM -->
+                    <article class="product-card reveal delay-2" data-product="zim">
+                        <div class="product-image">
+                            <span class="product-number">03</span>
+                            <img class="image-one" src="assets/img/sedalina-1.jpeg" alt="Lana Zim" width="700" height="500" loading="lazy">
+                        </div>
+                        <div class="product-content">
+                            <div>
+                                <span class="product-category">Alta resistencia</span>
+                                <h3 class="product-title">Lana Zim</h3>
+                                <p class="product-description">Formulada para costura continua. Disponible en diferentes presentaciones según el tamaño de cono deseado.</p>
+                                <div class="product-tags">
+                                    <span class="product-tag">Cono Normal</span>
+                                    <span class="product-tag">Cono Grande</span>
+                                    <span class="product-tag">Resistente</span>
+                                </div>
+                            </div>
+                            <div class="product-actions">
+                                <button class="product-button-catalog" type="button" onclick="openProduct('zim')">
+                                    🎨 Ver catálogo de colores
+                                </button>
+                                <a class="product-button-whatsapp" href="https://wa.me/50245947651?text=Hola%20DISTEXMA,%20deseo%20consultar%20por%20Lana%20Zim" target="_blank" rel="noopener noreferrer">
+                                    💬 Consultar por WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIÉNES SOMOS, POR QUÉ DISTEXMA, CTA, CONTACTO (Estructura base) -->
+        <section class="section about" id="nosotros">
+            <div class="container about-grid">
+                <div class="about-image reveal">
+                    <div class="about-image-main">
+                        <img src="assets/img/estante3.jpeg" alt="Instalaciones" width="800" height="900" loading="lazy">
+                    </div>
+                    <div class="about-badge">
+                        <strong>DISTEXMA</strong>
+                        <span>Hilos e insumos textiles</span>
+                    </div>
+                </div>
+                <div class="reveal delay-1">
+                    <span class="section-label">Conócenos</span>
+                    <h2 class="section-title">Quiénes somos</h2>
+                    <p class="about-text">DISTEXMA es una empresa guatemalteca dedicada a la comercialización de hilos y materiales textiles, con aproximadamente 27 años de trayectoria.</p>
+                </div>
+            </div>
+        </section>
+        <!-- =====================================================
+     POR QUÉ DISTEXMA (NUESTRA PROPUESTA)
+====================================================== -->
+<section class="section why">
+    <div class="container">
+        <span class="section-label reveal">Nuestra propuesta</span>
+        <h2 class="section-title reveal" style="color: white;">Pensado para facilitar tu trabajo.</h2>
+        <p class="section-description reveal" style="color: rgba(255,255,255,.62);">
+            Queremos que encontrar el hilo que necesitas sea un proceso sencillo y rápido.
+        </p>
+        <div class="why-grid">
+            <article class="why-card reveal">
+                <div class="why-icon">🎨</div>
+                <h3>Variedad</h3>
+                <p>Diferentes colores y referencias para adaptarse a distintas necesidades.</p>
+            </article>
+            <article class="why-card reveal delay-1">
+                <div class="why-icon">📦</div>
+                <h3>Presentaciones</h3>
+                <p>Opciones de presentación según el producto y la necesidad.</p>
+            </article>
+            <article class="why-card reveal delay-2">
+                <div class="why-icon">🤝</div>
+                <h3>Atención directa</h3>
+                <p>Consulta directamente con nuestro equipo para conocer disponibilidad.</p>
+            </article>
+            <article class="why-card reveal delay-3">
+                <div class="why-icon">⚡</div>
+                <h3>Respuesta rápida</h3>
+                <p>Consulta tus productos de manera sencilla a través de WhatsApp.</p>
+            </article>
+        </div>
+    </div>
+</section>
+<!-- =====================================================
+             CONTACTO
+        ====================================================== -->
+        <section class="section contact" id="contacto">
+            <div class="container">
+                <span class="section-label reveal">Hablemos</span>
+                <h2 class="section-title reveal">Estamos para ayudarte.</h2>
+                <p class="section-description reveal">
+                    ¿Tienes alguna consulta sobre nuestros productos? Comunícate con nosotros.
+                </p>
+                <div class="contact-grid">
+                    <div class="contact-card reveal">
+                        <h3>Información de contacto</h3>
+                        <div class="contact-row">
+                            <div class="contact-icon">📍</div>
+                            <div>
+                                <strong>Ubicación</strong>
+                                <span>Tecpán Guatemala, Chimaltenango</span>
+                            </div>
+                        </div>
+                        <div class="contact-row">
+                            <div class="contact-icon">📱</div>
+                            <div>
+                                <strong>WhatsApp</strong>
+                                <a href="https://wa.me/50245947651" target="_blank" rel="noopener noreferrer">Consultar por WhatsApp</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-card reveal delay-1">
+                        <h3>Horario de atención</h3>
+                        <div class="contact-row">
+                            <div class="contact-icon">🕐</div>
+                            <div>
+                                <strong>Atención</strong>
+                                <span>Consulta nuestro horario directamente por WhatsApp.</span>
+                            </div>
+                        </div>
+                        <div class="contact-row">
+                            <div class="contact-icon">💬</div>
+                            <div>
+                                <strong>Consultas</strong>
+                                <span>Productos, códigos, colores y presentaciones.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#inicio" class="logo" aria-label="DISTEXMA">
+                        <!-- Si tienes la imagen del logo, usa la etiqueta img abajo. Si no, usa el texto. -->
+                        <img src="assets/img/logo.png" alt="Logo DISTEXMA" onerror="this.outerHTML='<span style=&quot;font-size: 1.5rem; color: var(--gold); font-weight: 900;&quot;>DISTEXMA</span>'">
+                    </a>
+                    <p>Hilos e insumos textiles para diferentes necesidades de tejeduría, confección e industria.</p>
+                </div>
+                <div>
+                    <div class="footer-title">Navegación</div>
+                    <a href="#catalogo" class="footer-link">Catálogo</a>
+                    <a href="#nosotros" class="footer-link">Quiénes somos</a>
+                    <a href="#contacto" class="footer-link">Contacto</a>
+                </div>
+                <div>
+                    <div class="footer-title">Productos</div>
+                    <a href="#catalogo" class="footer-link">Hilo Capuano</a>
+                    <a href="#catalogo" class="footer-link">Hilo Sedalina</a>
+                    <a href="#catalogo" class="footer-link">Lana Zim</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                © 2026 DISTEXMA. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL PRODUCTO -->
+    <div class="modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 id="productModalTitle">Producto</h2>
+                <button class="close-button" type="button" onclick="closeProduct()" aria-label="Cerrar">×</button>
+            </div>
+            <div id="productModalContent" style="margin-top:20px;">
+                <!-- Los colores y tamaños se inyectan aquí con JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CARRITO -->
+    <div class="modal" id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartModalTitle">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 id="cartModalTitle">Tu carrito</h2>
+                <button class="close-button" type="button" onclick="closeCart()" aria-label="Cerrar">×</button>
+            </div>
+            <div id="cartItemsContainer" style="margin-top:16px;">
+                <p class="cart-empty">Tu carrito está vacío.</p>
+            </div>
+            <div id="cartTotalRow" class="cart-total" style="display:none;">
+                <span>Total</span>
+                <span id="cartTotalAmount">Q0.00</span>
+            </div>
+            
+        <!-- Formulario oculto hasta que decida "Finalizar Compra" -->
+                    <div id="checkoutFields" style="display:none; margin-top:10px;">
+                        <h3 style="font-size: 0.9rem; color: var(--navy); border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-bottom: 15px;">Datos de Recogida</h3>
+                        
+                        <label class="order-label" for="checkoutName">Nombre completo</label>
+                        <input type="text" id="checkoutName" class="search-input" placeholder="Tu nombre completo" required style="margin-top:0;">
+                        
+                        <label class="order-label" for="checkoutPhone">Teléfono</label>
+                        <input type="tel" id="checkoutPhone" class="search-input" placeholder="Ej: 55555555" required style="margin-top:0;">
+                        
+                        <!-- NUEVO CAMPO DE CORREO ELECTRÓNICO -->
+                        <label class="order-label" for="checkoutEmail">Correo electrónico</label>
+                        <input type="email" id="checkoutEmail" class="search-input" placeholder="ejemplo@correo.com" required style="margin-top:0;">
+                        
+                        <label class="order-label" for="checkoutDate">Fecha de recogida (Mínimo mañana)</label>
+                        <input type="date" id="checkoutDate" class="search-input" required style="margin-top:0;">
+                    </div>
+            
+            <div id="cartResult" class="order-result"></div>
+            
+            <!-- Contenedor dinámico de botones -->
+            <div id="cartActionsBlock" style="margin-top: 16px;"></div>
+        </div>
+    </div>
+
+    <script src="js/main.js" defer></script>
+</body>
+</html>
