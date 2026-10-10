@@ -36,7 +36,9 @@ if ("IntersectionObserver" in window) {
 /* ========================================================
    CONEXIÓN A ORACLE Y RENDERIZADO DE MODALES
 ======================================================== */
-const API_URL = 'HTTPS://5451DA47A8E0A1.LHR.LIFE/distexma';
+// IMPORTANTE: cambia esta URL cada vez que reinicies el túnel (sin barra al final)
+const API_URL = 'https://5451da47a8e0a1.lhr.life/distexma';
+
 let inventarioOracle = [];
 const NOMBRES_ORACLE = { 'capuano': 'Capuano', 'sedalina': 'Sedalina', 'zim': 'Lana Zim' };
 
@@ -68,11 +70,11 @@ let tipoSeleccionadoActual = '';
 function openProduct(idHtml) {
     tipoSeleccionadoActual = NOMBRES_ORACLE[idHtml];
     productModalTitle.textContent = "Catálogo: " + tipoSeleccionadoActual;
-    
+
     const hilos = inventarioOracle.filter(item => item.TIPO_HILO === tipoSeleccionadoActual);
     const coloresUnicos = [];
     const hexVistos = new Set();
-    
+
     hilos.forEach(item => {
         if(!hexVistos.has(item.CODIGO_HEX)) {
             hexVistos.add(item.CODIGO_HEX);
@@ -103,23 +105,23 @@ let colorSeleccionadoData = {};
 function seleccionarColor(hex, nombreColor) {
     const container = document.getElementById("tamanosContainer");
     const grid = document.querySelector('.colores-grid');
-    
-    productosTamanoActual = inventarioOracle.filter(item => 
-        (item.tipo_hilo === tipoSeleccionadoActual || item.TIPO_HILO === tipoSeleccionadoActual) && 
+
+    productosTamanoActual = inventarioOracle.filter(item =>
+        (item.tipo_hilo === tipoSeleccionadoActual || item.TIPO_HILO === tipoSeleccionadoActual) &&
         (item.codigo_hex === hex || item.CODIGO_HEX === hex)
     );
-    
+
     colorSeleccionadoData = { hex, nombreColor };
     if (productosTamanoActual.length === 0) return;
-    
+
     if (grid) grid.style.display = "none";
     container.style.display = "block";
-    
+
     container.innerHTML = `
         <button type="button" onclick="volverAColores()" style="background:none; border:none; color:var(--navy); font-size:1rem; font-weight:bold; cursor:pointer; margin-bottom:20px; display:flex; align-items:center; gap:5px; padding:0;">
             ← Volver a todos los colores
         </button>
-        
+
         <div style="padding-top:10px;">
             <div class="color-preview-container">
                 <div class="large-color-circle" style="background-color: ${hex};"></div>
@@ -137,7 +139,7 @@ function seleccionarColor(hex, nombreColor) {
             <div id="purchaseActionContainer"></div>
         </div>
     `;
-    
+
     cambiarTamano(0, document.querySelector('.size-pill.active'));
 }
 
@@ -148,13 +150,13 @@ function cambiarTamano(index, elementoPill) {
 
     const p = productosTamanoActual[index];
     const containerAction = document.getElementById("purchaseActionContainer");
-    
+
     const precio = p.precio || p.PRECIO;
     const codigo = p.codigo_interno || p.CODIGO_INTERNO;
     const stock = p.stock || p.STOCK;
     const tipo = p.tipo_hilo || p.TIPO_HILO;
     const tamano = p.tamano || p.TAMANO;
-    
+
     containerAction.innerHTML = `
         <div class="purchase-action-card">
             <div>
@@ -178,7 +180,7 @@ function cambiarTamano(index, elementoPill) {
 function volverAColores() {
     const container = document.getElementById("tamanosContainer");
     const grid = document.querySelector('.colores-grid');
-    
+
     container.style.display = "none";
     if (grid) grid.style.display = "";
 }
@@ -222,6 +224,7 @@ function agregarDesdeGrande(codigo, tipo, nombreColor, tamano, precio, stock) {
         cart.push({
             codigo: codigo,
             tipo_hilo: tipo,
+            tipo: tipo,
             nombreColor: nombreColor,
             tamano: tamano,
             precio: precio,
@@ -296,7 +299,7 @@ function renderCart() {
     checkoutStep = false;
     document.getElementById("checkoutFields").style.display = "none";
     document.getElementById("cartResult").textContent = "";
-    
+
     const cartBadge = document.getElementById("cartBadge");
     const totalItems = cart.reduce((sum, item) => sum + item.cantidad, 0);
     cartBadge.textContent = totalItems;
@@ -314,8 +317,8 @@ function renderCart() {
     container.innerHTML = cart.map((item, index) => `
         <div class="cart-item">
             <div class="cart-item-info">
-                <strong>${item.tipo} - ${item.nombreColor || item.color} (${item.tamano})</strong>
-                <span>Cód: ${item.codigo} | Q${item.precio.toFixed(2)} c/u</span>
+                <strong>${item.tipo || item.tipo_hilo} - ${item.nombreColor || item.color} (${item.tamano})</strong>
+                <span>Cód: ${item.codigo} | Q${Number(item.precio).toFixed(2)} c/u</span>
             </div>
             <div class="cart-item-controls">
                 <button type="button" class="qty-btn" onclick="cambiarCantidad(${index}, -1)">−</button>
@@ -329,7 +332,7 @@ function renderCart() {
     const total = cart.reduce((sum, item) => sum + item.cantidad * item.precio, 0);
     document.getElementById("cartTotalAmount").textContent = `Q${total.toFixed(2)}`;
     document.getElementById("cartTotalRow").style.display = "flex";
-    
+
     document.getElementById("cartActionsBlock").innerHTML = `
         <button type="button" class="button button-primary" style="width:100%; margin-bottom:10px;" onclick="iniciarCheckout()">
             Finalizar Compra
@@ -388,7 +391,7 @@ cartModal.addEventListener("click", e => { if (e.target === cartModal) closeCart
 function iniciarCheckout() {
     checkoutStep = true;
     document.getElementById("checkoutFields").style.display = "block";
-    
+
     document.getElementById("cartActionsBlock").innerHTML = `
         <button type="button" class="button button-primary" style="width:100%; margin-bottom:10px;" onclick="enviarPedido()">
             Confirmar Reserva (Vía WhatsApp)
@@ -411,7 +414,7 @@ function enviarPedido() {
         document.getElementById("cartResult").className = "order-result error";
         return;
     }
-    
+
     if (cart.length === 0) return;
 
     boton.textContent = "Guardando orden...";
@@ -425,20 +428,18 @@ function enviarPedido() {
         carrito: cart
     };
 
-        fetch(`${API_URL}/guardar_pedido.php`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(datosPedido)
-        })
-        }
-
+    fetch(`${API_URL}/guardar_pedido.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datosPedido)
+    })
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
             const numeroOrden = data.numero_orden;
-            
+
             cart.forEach(item => {
-                const productoVisual = inventarioOracle.find(inv => 
+                const productoVisual = inventarioOracle.find(inv =>
                     (inv.codigo_interno === item.codigo || inv.CODIGO_INTERNO === item.codigo)
                 );
                 if (productoVisual) {
@@ -453,27 +454,27 @@ function enviarPedido() {
             mensaje += `*Correo:* ${correo}\n`;
             mensaje += `*Fecha de recogida:* ${fecha}\n\n`;
             mensaje += `*DETALLE DEL PEDIDO:*\n`;
-            
+
             let totalPedido = 0;
             cart.forEach(item => {
                 const subtotal = item.precio * item.cantidad;
                 totalPedido += subtotal;
                 mensaje += `- ${item.cantidad}x [${item.codigo}] ${item.nombreColor || item.color} (${item.tamano}) : Q${subtotal}\n`;
             });
-            
+
             mensaje += `\n*TOTAL A PAGAR: Q${totalPedido}*`;
 
             document.getElementById("cartResult").textContent = `¡Reserva guardada! Orden: ${numeroOrden}. Redirigiendo a WhatsApp...`;
             document.getElementById("cartResult").className = "order-result";
             document.getElementById("cartResult").style.color = "var(--navy)";
-            
-            const numeroWhatsApp = "50245947651"; 
+
+            const numeroWhatsApp = "50245947651";
             window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`, '_blank');
 
             cart = [];
             renderCart();
             setTimeout(closeCart, 3000);
-            
+
         } else {
             throw new Error(data.mensaje);
         }
@@ -498,7 +499,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('hilo-amarillo'),
         document.getElementById('hilo-rojo')
     ];
-    
+
     hilosSVG.forEach(hilo => {
         if(hilo) {
             const length = hilo.getTotalLength();
@@ -511,7 +512,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         const windowHeight = document.documentElement.clientHeight;
         const docHeight = document.documentElement.scrollHeight;
-        
+
         const scrollPercent = (scrollTop + windowHeight) / docHeight;
 
         hilosSVG.forEach(hilo => {
@@ -530,15 +531,15 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     const cursorDot = document.querySelector('.cursor-dot');
     const cursorOutline = document.querySelector('.cursor-outline');
-    
+
     if (cursorDot && cursorOutline && window.innerWidth > 992) {
         window.addEventListener('mousemove', (e) => {
             const posX = e.clientX;
             const posY = e.clientY;
-            
+
             cursorDot.style.left = `${posX}px`;
             cursorDot.style.top = `${posY}px`;
-            
+
             cursorOutline.animate({
                 left: `${posX}px`,
                 top: `${posY}px`
@@ -552,7 +553,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
             });
         };
-        
+
         agregarEfectoHover();
         const observer = new MutationObserver(agregarEfectoHover);
         observer.observe(document.body, { childList: true, subtree: true });
@@ -570,13 +571,13 @@ document.addEventListener("DOMContentLoaded", () => {
             cardMain.style.transform = `rotate(2deg) translate(${x}px, ${y}px)`;
             cardSmall.style.transform = `rotate(-5deg) translate(${-x}px, ${-y}px)`;
         });
-        
+
         heroSection.addEventListener('mouseleave', () => {
             cardMain.style.transform = `rotate(2deg) translate(0px, 0px)`;
             cardSmall.style.transform = `rotate(-5deg) translate(0px, 0px)`;
             cardMain.style.transition = 'transform 0.5s ease-out';
             cardSmall.style.transition = 'transform 0.5s ease-out';
-            
+
             setTimeout(() => {
                 cardMain.style.transition = '';
                 cardSmall.style.transition = '';
@@ -633,7 +634,7 @@ function ejecutarBusquedaWeb(texto) {
 }
 
 function seleccionarProductoWeb(codigoBuscado) {
-    const producto = inventarioOracle.find(inv => 
+    const producto = inventarioOracle.find(inv =>
         (inv.codigo_interno === codigoBuscado || inv.CODIGO_INTERNO === codigoBuscado)
     );
 
