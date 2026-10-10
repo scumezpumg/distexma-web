@@ -42,7 +42,7 @@ const NOMBRES_ORACLE = { 'capuano': 'Capuano', 'sedalina': 'Sedalina', 'zim': 'L
 document.addEventListener("DOMContentLoaded", async () => {
     configurarFechaMinima();
     try {
-        const response = await fetch('api_catalogo.php');
+        const response = await fetch('https://traverse-cement-skeptic.ngrok-free.dev/distexma/api_catalogo.php');
         inventarioOracle = await response.json();
     } catch (error) {
         console.error("Error al conectar con Oracle:", error);
@@ -103,7 +103,6 @@ function seleccionarColor(hex, nombreColor) {
     const container = document.getElementById("tamanosContainer");
     const grid = document.querySelector('.colores-grid');
     
-    // Filtro seguro para Oracle
     productosTamanoActual = inventarioOracle.filter(item => 
         (item.tipo_hilo === tipoSeleccionadoActual || item.TIPO_HILO === tipoSeleccionadoActual) && 
         (item.codigo_hex === hex || item.CODIGO_HEX === hex)
@@ -112,13 +111,9 @@ function seleccionarColor(hex, nombreColor) {
     colorSeleccionadoData = { hex, nombreColor };
     if (productosTamanoActual.length === 0) return;
     
-    // 1. OCULTAMOS LA CUADRÍCULA DE COLORES (Desaparecen los círculos)
     if (grid) grid.style.display = "none";
-    
-    // 2. MOSTRAMOS EL PANEL DE TAMAÑOS
     container.style.display = "block";
     
-    // HTML corregido sin los errores que dejaban la pantalla en blanco
     container.innerHTML = `
         <button type="button" onclick="volverAColores()" style="background:none; border:none; color:var(--navy); font-size:1rem; font-weight:bold; cursor:pointer; margin-bottom:20px; display:flex; align-items:center; gap:5px; padding:0;">
             ← Volver a todos los colores
@@ -175,7 +170,6 @@ function cambiarTamano(index, elementoPill) {
                 </button>
             </div>
         </div>
-        <!-- Contenedor para mensajes de error de stock -->
         <div id="stock-error-msg" style="color: #dc3545; font-size: 0.85rem; margin-top: 10px; text-align: right; display: none; font-weight: 500;"></div>
     `;
 }
@@ -184,10 +178,7 @@ function volverAColores() {
     const container = document.getElementById("tamanosContainer");
     const grid = document.querySelector('.colores-grid');
     
-    // 3. OCULTAMOS EL PANEL
     container.style.display = "none";
-    
-    // 4. RESTAURAMOS LA CUADRÍCULA (Eliminando la regla para que actúe tu CSS original)
     if (grid) grid.style.display = "";
 }
 
@@ -196,10 +187,8 @@ function agregarDesdeGrande(codigo, tipo, nombreColor, tamano, precio, stock) {
     const qty = parseInt(qtyInput.value);
     const errorMsg = document.getElementById("stock-error-msg");
 
-    // Limpiamos cualquier error visual anterior
     if (errorMsg) errorMsg.style.display = "none";
 
-    // 1. Validaciones
     if (isNaN(qty) || qty <= 0) {
         if (errorMsg) {
             errorMsg.textContent = "Por favor, ingresa una cantidad válida.";
@@ -226,7 +215,6 @@ function agregarDesdeGrande(codigo, tipo, nombreColor, tamano, precio, stock) {
         return;
     }
 
-    // 2. Agregar al carrito
     if (itemExistente) {
         itemExistente.cantidad += qty;
     } else {
@@ -241,15 +229,13 @@ function agregarDesdeGrande(codigo, tipo, nombreColor, tamano, precio, stock) {
         });
     }
 
-    // 3. Actualizar carrito internamente
     if (typeof renderCart === 'function') {
         renderCart();
     }
 
-    // 4. Cambiar la interfaz para preguntar el siguiente paso
     const controlsDiv = document.querySelector('.purchase-controls');
     if (controlsDiv) {
-        controlsDiv.style.flexDirection = "column"; // Acomodamos los botones en lista
+        controlsDiv.style.flexDirection = "column";
         controlsDiv.innerHTML = `
             <div style="background-color: #d4edda; color: #155724; padding: 8px; border-radius: 5px; text-align: center; font-size: 0.9rem; font-weight: bold; margin-bottom: 10px; width: 100%;">
                 ✓ ¡Producto agregado con éxito!
@@ -438,7 +424,7 @@ function enviarPedido() {
         carrito: cart
     };
 
-    fetch('guardar_pedido.php', {
+    fetch('https://traverse-cement-skeptic.ngrok-free.dev/distexma/guardar_pedido.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datosPedido)
@@ -643,7 +629,6 @@ function ejecutarBusquedaWeb(texto) {
     contenedorResultados.innerHTML = htmlResultados;
 }
 
-// CORREGIDO: Abre exactamente el mismo modal nativo de tu web con el color y tamaños seleccionados
 function seleccionarProductoWeb(codigoBuscado) {
     const producto = inventarioOracle.find(inv => 
         (inv.codigo_interno === codigoBuscado || inv.CODIGO_INTERNO === codigoBuscado)
@@ -651,7 +636,6 @@ function seleccionarProductoWeb(codigoBuscado) {
 
     if (!producto) return;
 
-    // Limpiamos el buscador rápido
     document.getElementById("inputBusquedaWeb").value = "";
     document.getElementById("resultadosBusquedaWeb").innerHTML = "";
 
@@ -659,15 +643,12 @@ function seleccionarProductoWeb(codigoBuscado) {
     const hex = producto.codigo_hex || producto.CODIGO_HEX;
     const colorNombre = producto.color_nombre || producto.COLOR_NOMBRE;
 
-    // Identificamos el idHtml que usa tu función openProduct (capuano, sedalina, zim)
     let idHtmlEncontrado = 'capuano';
     if (tipo.toLowerCase().includes('sedalina')) idHtmlEncontrado = 'sedalina';
     else if (tipo.toLowerCase().includes('zim')) idHtmlEncontrado = 'zim';
 
-    // Abrimos el modal de la línea correspondiente
     openProduct(idHtmlEncontrado);
 
-    // Seleccionamos automáticamente el color y mostramos sus tamaños y cantidades
     setTimeout(() => {
         seleccionarColor(hex, colorNombre);
     }, 100);
