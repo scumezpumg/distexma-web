@@ -430,7 +430,7 @@ function enviarPedido() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(datosPedido)
         })
-        })
+        }
 
     .then(response => response.json())
     .then(data => {
