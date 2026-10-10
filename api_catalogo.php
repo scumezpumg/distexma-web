@@ -1,13 +1,14 @@
 <?php
-// api_catalogo.php
+ini_set('display_errors', 0);
+error_reporting(0);
+
+require 'cors.php';
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *'); // Vital para tu futura app móvil
 require 'conexion.php';
 
 try {
     $pdo = conectarOracle();
-    
-    // Consulta SQL que une todo lo que necesita tu frontend
+
     $sql = "SELECT 
                 i.codigo_interno,
                 t.nombre AS tipo_hilo,
@@ -21,13 +22,12 @@ try {
             JOIN colores c ON i.id_color = c.id_color
             JOIN tamanos_precio tam ON i.id_tamano = tam.id_tamano
             ORDER BY t.id_tipo ASC, c.orden_cromatico ASC, tam.precio ASC";
-            
+
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
-    
-    $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($resultados);
-    
+
+    echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+
 } catch (Exception $e) {
     echo json_encode(["error" => $e->getMessage()]);
 }

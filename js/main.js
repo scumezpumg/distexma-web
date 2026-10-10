@@ -42,7 +42,9 @@ const NOMBRES_ORACLE = { 'capuano': 'Capuano', 'sedalina': 'Sedalina', 'zim': 'L
 document.addEventListener("DOMContentLoaded", async () => {
     configurarFechaMinima();
     try {
-        const response = await fetch('https://traverse-cement-skeptic.ngrok-free.dev/distexma/api_catalogo.php');
+        const response = await fetch('https://traverse-cement-skeptic.ngrok-free.dev/distexma/api_catalogo.php', {
+        headers: { 'ngrok-skip-browser-warning': 'true' }
+        });
         inventarioOracle = await response.json();
     } catch (error) {
         console.error("Error al conectar con Oracle:", error);
@@ -424,11 +426,15 @@ function enviarPedido() {
         carrito: cart
     };
 
-    fetch('https://traverse-cement-skeptic.ngrok-free.dev/distexma/guardar_pedido.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datosPedido)
-    })
+        fetch('https://traverse-cement-skeptic.ngrok-free.dev/distexma/guardar_pedido.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true'
+            },
+            body: JSON.stringify(datosPedido)
+        })
+
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {

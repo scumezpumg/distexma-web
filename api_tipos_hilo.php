@@ -1,25 +1,20 @@
 <?php
-// Desactivar errores visibles para mantener un JSON limpio
 ini_set('display_errors', 0);
 error_reporting(0);
 
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-
-include 'conexion.php';
+require 'cors.php';
+header('Content-Type: application/json; charset=utf-8');
+require 'conexion.php';
 
 try {
     $pdo = conectarOracle();
-    
-    $sql = "SELECT id_tipo, nombre, abreviatura FROM tipos_hilo";
-    $stmt = $pdo->prepare($sql);
+
+    $stmt = $pdo->prepare("SELECT id_tipo, nombre, abreviatura FROM tipos_hilo");
     $stmt->execute();
-    
-    $tipos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    echo json_encode($tipos);
+
+    echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
 
 } catch (Exception $e) {
-    echo json_encode(array("error" => "Error en la consulta: " . $e->getMessage()));
+    echo json_encode(["error" => "Error en la consulta: " . $e->getMessage()]);
 }
 ?>
