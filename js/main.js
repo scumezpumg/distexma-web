@@ -42,7 +42,7 @@ const NOMBRES_ORACLE = { 'capuano': 'Capuano', 'sedalina': 'Sedalina', 'zim': 'L
 document.addEventListener("DOMContentLoaded", async () => {
     configurarFechaMinima();
     try {
-        const response = await fetch('http://localhost:8080/distexma/api_catalogo.php');
+        const response = await fetch('api_catalogo.php');
         inventarioOracle = await response.json();
     } catch (error) {
         console.error("Error al conectar con Oracle:", error);
