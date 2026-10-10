@@ -36,15 +36,14 @@ if ("IntersectionObserver" in window) {
 /* ========================================================
    CONEXIÓN A ORACLE Y RENDERIZADO DE MODALES
 ======================================================== */
+const API_URL = 'HTTPS://5451DA47A8E0A1.LHR.LIFE/distexma';
 let inventarioOracle = [];
 const NOMBRES_ORACLE = { 'capuano': 'Capuano', 'sedalina': 'Sedalina', 'zim': 'Lana Zim' };
 
 document.addEventListener("DOMContentLoaded", async () => {
     configurarFechaMinima();
     try {
-        const response = await fetch('https://traverse-cement-skeptic.ngrok-free.dev/distexma/api_catalogo.php', {
-        headers: { 'ngrok-skip-browser-warning': 'true' }
-        });
+        const response = await fetch(`${API_URL}/api_catalogo.php`);
         inventarioOracle = await response.json();
     } catch (error) {
         console.error("Error al conectar con Oracle:", error);
@@ -426,13 +425,11 @@ function enviarPedido() {
         carrito: cart
     };
 
-        fetch('https://traverse-cement-skeptic.ngrok-free.dev/distexma/guardar_pedido.php', {
+        fetch(`${API_URL}/guardar_pedido.php`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'ngrok-skip-browser-warning': 'true'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(datosPedido)
+        })
         })
 
     .then(response => response.json())
