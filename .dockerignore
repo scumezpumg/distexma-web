@@ -1,0 +1,5 @@
+.git
+*.zip
+wallet*
+Wallet*
+.env

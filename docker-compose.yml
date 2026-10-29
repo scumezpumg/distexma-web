@@ -7,3 +7,6 @@ services:
     restart: always
     environment:
       - TZ=America/Guatemala
+      - DB_USER=DISTEXMA
+      - DB_PASS=${DB_PASS}
+      - DB_DSN=${DB_DSN}

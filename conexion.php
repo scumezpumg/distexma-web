@@ -1,21 +1,22 @@
 <?php
-// conexion.php
+// conexion.php - Oracle Autonomous Database (configuración por variables de entorno)
+//
+// Variables necesarias:
+//   DB_USER  -> DISTEXMA
+//   DB_PASS  -> contraseña del usuario DISTEXMA
+//   DB_DSN   -> cadena de conexión TLS completa (ver guía), sin wallet
 function conectarOracle() {
-    $host = "localhost";
-    $puerto = "1521";
-    $servicio = "XEPDB1";
-    $usuario = "system"; // El usuario que te funcionó
-    $password = "cuborubik"; // Cambia esto por tu contraseña real de system
+    $usuario = getenv('DB_USER') ?: 'DISTEXMA';
+    $password = getenv('DB_PASS');
+    $dsn = getenv('DB_DSN');
 
-    $tns = "(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=$host)(PORT=$puerto))(CONNECT_DATA=(SERVICE_NAME=$servicio)))";
-
-    try {
-        // AL32UTF8 es crucial para que los acentos y las ñ funcionen bien
-        $pdo = new PDO("oci:dbname=" . $tns . ";charset=AL32UTF8", $usuario, $password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $pdo;
-    } catch (PDOException $e) {
-        die(json_encode(["error" => "Error de conexión: " . $e->getMessage()]));
+    if (!$password || !$dsn) {
+        throw new Exception("Faltan las variables de entorno DB_PASS o DB_DSN.");
     }
+
+    // AL32UTF8 es crucial para que los acentos y las ñ funcionen bien
+    $pdo = new PDO("oci:dbname=" . $dsn . ";charset=AL32UTF8", $usuario, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $pdo;
 }
 ?>
