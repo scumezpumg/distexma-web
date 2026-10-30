@@ -28,5 +28,11 @@ RUN a2enmod rewrite
 COPY . /var/www/html/
 RUN chown -R www-data:www-data /var/www/html
 
-# Render (y otros hostings) indican el puerto con la variable PORT
-CMD ["sh", "-c", "sed -i \"s/80/${PORT:-80}/g\" /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf && apache2-foreground"]
+# Wallet de Oracle: sqlnet.ora fijo; cwallet.sso se recibe por variable de entorno (base64)
+ENV TNS_ADMIN=/opt/wallet
+RUN mkdir -p /opt/wallet && \
+    printf 'WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="/opt/wallet")))\nSSL_SERVER_DN_MATCH=yes\n' > /opt/wallet/sqlnet.ora && \
+    chmod -R a+rX /opt/wallet
+
+# Render indica el puerto con PORT; aquí también se reconstruye el wallet al arrancar
+CMD ["sh", "-c", "echo \"$WALLET_SSO_B64\" | base64 -d > /opt/wallet/cwallet.sso && chmod a+r /opt/wallet/cwallet.sso && sed -i \"s/80/${PORT:-80}/g\" /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf && apache2-foreground"]
